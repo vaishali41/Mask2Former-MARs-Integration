@@ -31,3 +31,13 @@ outputs/
 # System files
 .DS_Store
 Thumbs.db
+
+# Ignore Weights & Biases and heavy artifacts
+wandb/
+*.wandb
+*.log
+*.pth
+checkpoints/
+outputs/
+data/
+datasets/
