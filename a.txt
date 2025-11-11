@@ -1,0 +1,1 @@
+python3 tools/eval_mars_rotations_1.py --config-file configs/coco/mars_5k_50ep_corrected.yaml --model-path ./output_mars_fixed_5k_50ep/model_final.pth --dataset coco_2017_val_subset --output-dir ./evaluation_results_mars_fixed1

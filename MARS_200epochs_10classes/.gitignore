@@ -1,0 +1,33 @@
+# Python cache and build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.env/
+venv/
+env/
+
+# VS Code settings
+.vscode/
+.settings/
+
+# Logs and checkpoints
+*.log
+*.pth
+*.ckpt
+runs/
+checkpoints/
+
+# Datasets and large files
+data/
+datasets/
+outputs/
+
+# System files
+.DS_Store
+Thumbs.db

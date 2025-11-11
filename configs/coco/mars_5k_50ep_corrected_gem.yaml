@@ -1,0 +1,113 @@
+# Mask2Former + MARs + GeM (Fixed pixel decoder config)
+
+OUTPUT_DIR: "output_mars_fixed_5k_50ep_gem_without_mars_backprop"
+
+MODEL:
+  META_ARCHITECTURE: "MaskFormerWithMARS"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  DEVICE: "cuda"
+
+  BACKBONE:
+    NAME: "build_resnet_backbone"
+  
+  RESNETS:
+    DEPTH: 50
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+
+  # Primary semantic segmentation head config
+  SEM_SEG_HEAD:
+    NAME: "MaskFormerHead"
+    PIXEL_DECODER_NAME: "MSDeformAttnPixelDecoder"
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]  # Input features from backbone
+    DEFORMABLE_TRANSFORMER_ENCODER_IN_FEATURES: ["res3", "res4", "res5"]  # For deformable attention
+    MASK_DIM: 256
+    NUM_CLASSES: 80  # COCO instance segmentation (80 thing classes)
+    
+  # Additional Mask2Former specific configs
+  MASK_FORMER:
+    TRANSFORMER_DECODER_NAME: "MultiScaleMaskedTransformerDecoder"
+    TRANSFORMER_IN_FEATURE: "multi_scale_pixel_decoder"
+    NUM_OBJECT_QUERIES: 100
+    DEEP_SUPERVISION: True
+    NO_OBJECT_WEIGHT: 0.1
+    CLASS_WEIGHT: 2.0
+    MASK_WEIGHT: 5.0
+    DICE_WEIGHT: 5.0
+    HIDDEN_DIM: 256
+    NUM_HEADS: 8
+    DROPOUT: 0.0
+    DIM_FEEDFORWARD: 2048
+    ENC_LAYERS: 0
+    PRE_NORM: False
+    ENFORCE_INPUT_PROJ: False
+    SIZE_DIVISIBILITY: 32
+    DEC_LAYERS: 9  # Mask2Former uses 9 decoder layers
+    TRAIN_NUM_POINTS: 12544
+    OVERSAMPLE_RATIO: 3.0
+    IMPORTANCE_SAMPLE_RATIO: 0.75
+    TEST:
+      SEMANTIC_ON: True
+      INSTANCE_ON: True
+      PANOPTIC_ON: False
+      OVERLAP_THRESHOLD: 0.8
+      OBJECT_MASK_THRESHOLD: 0.8
+
+  # MARs configuration
+  MARS:
+    ENABLED: True
+    WEIGHT: 0.5               # sweepable
+    LOSS_TYPE: "cosine"           # {"kl","cosine","l2"}
+    USE_GEM: True
+    GEM_INIT_P: 3.0           # sweep starts at 1.0
+    GEM_MIN_P: 1.0
+    GEM_MAX_P: 6.0
+    WARMUP_ITERS: 1000
+
+DATASETS:
+  TRAIN: ("coco_2017_train_subset",)
+  TEST: ("coco_2017_val_subset",)
+
+DATALOADER:
+  NUM_WORKERS: 4
+  FILTER_EMPTY_ANNOTATIONS: True
+
+SOLVER:
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.0001
+  OPTIMIZER: "ADAMW"
+  WEIGHT_DECAY: 0.05
+  BACKBONE_MULTIPLIER: 0.1  
+  STEPS: (327778, 355092)
+  MAX_ITER: 368750
+
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: linear
+
+  CHECKPOINT_PERIOD: 10000
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "value"
+    CLIP_VALUE: 1.0
+    NORM_TYPE: 2.0
+
+#TEST:
+  #EVAL_PERIOD: 10000
+
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN_SAMPLING: "choice"
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MAX_SIZE_TEST: 1333
+  FORMAT: "RGB"
+
+# Optional: reference sweep space
+SWEEP:
+  ENABLED: False
+  SOLVER:
+    BASE_LR: [5e-5, 1e-4, 2e-4]
+  MODEL:
+    MARS_WEIGHT: [0.5, 0.1, 0.2]
+    LOSS_TYPE: ["kl", "cosine"]
+    GEM_INIT_P: [1.0, 2.0, 3.0, 4.0]

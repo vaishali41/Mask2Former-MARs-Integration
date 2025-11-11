@@ -1,0 +1,15 @@
+# Save as configs/coco_subset.yaml
+_BASE_: "coco/instance-segmentation/maskformer2_R50_bs16_50ep.yaml"
+
+DATASETS:
+  TRAIN: ("coco_2017_train_subset",)
+  TEST: ("coco_2017_val_subset",)
+
+SOLVER:
+  IMS_PER_BATCH: 8
+  MAX_ITER: 31250  # ~50 epochs for 5000 images
+  STEPS: (25000,)
+  CHECKPOINT_PERIOD: 5000
+
+TEST:
+  EVAL_PERIOD: 5000

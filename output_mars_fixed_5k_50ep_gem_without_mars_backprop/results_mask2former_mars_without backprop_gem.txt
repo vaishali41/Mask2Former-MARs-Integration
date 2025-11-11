@@ -1,0 +1,130 @@
+[11/01 18:43:39 d2.utils.events]:  eta: 0:00:00  iter: 368749  total_loss: 56.41  loss_ce: 2.215  loss_mask: 0.9474  loss_dice: 2.983  loss_ce_0: 3.447  loss_mask_0: 1.084  loss_dice_0: 3.176  loss_ce_1: 2.448  loss_mask_1: 0.9636  loss_dice_1: 3.141  loss_ce_2: 2.274  loss_mask_2: 0.9943  loss_dice_2: 3.102  loss_ce_3: 2.264  loss_mask_3: 0.9608  loss_dice_3: 2.938  loss_ce_4: 2.275  loss_mask_4: 0.939  loss_dice_4: 2.996  loss_ce_5: 2.189  loss_mask_5: 0.9481  loss_dice_5: 2.945  loss_ce_6: 2.249  loss_mask_6: 0.9426  loss_dice_6: 2.937  loss_ce_7: 2.236  loss_mask_7: 0.9579  loss_dice_7: 3.004  loss_mars: 4.303e-07  time: 0.4798  data_time: 0.0041  lr: 1e-06  max_mem: 13914M
+[11/01 18:43:39 d2.engine.hooks]: Overall training speed: 338748 iterations in 1 day, 21:08:49 (0.4798 s / it)
+[11/01 18:43:39 d2.engine.hooks]: Total training time: 1 day, 21:14:27 (0:05:38 on hooks)
+[11/01 18:43:39 d2.data.build]: Distribution of instances among all 80 categories:
+|   category    | #instances   |   category   | #instances   |   category    | #instances   |
+|:-------------:|:-------------|:------------:|:-------------|:-------------:|:-------------|
+|    person     | 2199         |   bicycle    | 78           |      car      | 345          |
+|  motorcycle   | 61           |   airplane   | 26           |      bus      | 56           |
+|     train     | 36           |    truck     | 63           |     boat      | 81           |
+| traffic light | 69           | fire hydrant | 21           |   stop sign   | 14           |
+| parking meter | 16           |    bench     | 82           |     bird      | 97           |
+|      cat      | 48           |     dog      | 40           |     horse     | 45           |
+|     sheep     | 42           |     cow      | 46           |   elephant    | 46           |
+|     bear      | 14           |    zebra     | 69           |    giraffe    | 36           |
+|   backpack    | 98           |   umbrella   | 39           |    handbag    | 93           |
+|      tie      | 75           |   suitcase   | 57           |    frisbee    | 22           |
+|     skis      | 44           |  snowboard   | 19           |  sports ball  | 45           |
+|     kite      | 47           | baseball bat | 32           | baseball gl.. | 25           |
+|  skateboard   | 32           |  surfboard   | 56           | tennis racket | 52           |
+|    bottle     | 208          |  wine glass  | 65           |      cup      | 185          |
+|     fork      | 43           |    knife     | 65           |     spoon     | 52           |
+|     bowl      | 128          |    banana    | 90           |     apple     | 41           |
+|   sandwich    | 33           |    orange    | 38           |   broccoli    | 96           |
+|    carrot     | 64           |   hot dog    | 33           |     pizza     | 54           |
+|     donut     | 51           |     cake     | 29           |     chair     | 391          |
+|     couch     | 54           | potted plant | 64           |      bed      | 41           |
+| dining table  | 152          |    toilet    | 36           |      tv       | 49           |
+|    laptop     | 53           |    mouse     | 21           |    remote     | 57           |
+|   keyboard    | 32           |  cell phone  | 58           |   microwave   | 8            |
+|     oven      | 28           |   toaster    | 2            |     sink      | 47           |
+| refrigerator  | 24           |     book     | 206          |     clock     | 47           |
+|     vase      | 53           |   scissors   | 5            |  teddy bear   | 46           |
+|  hair drier   | 0            |  toothbrush  | 2            |               |              |
+|     total     | 7117         |              |              |               |              |
+[11/01 18:43:39 d2.data.dataset_mapper]: [DatasetMapper] Augmentations used in inference: [ResizeShortestEdge(short_edge_length=(800, 800), max_size=1333, sample_style='choice')]
+[11/01 18:43:39 d2.data.common]: Serializing 1000 elements to byte tensors and concatenating them all ...
+[11/01 18:43:39 d2.data.common]: Serialized dataset takes 3.76 MiB
+[11/01 18:43:39 d2.evaluation.coco_evaluation]: Trying to convert 'coco_2017_val_subset' to COCO format ...
+[11/01 18:43:39 d2.data.datasets.coco]: Converting annotations of dataset 'coco_2017_val_subset' to COCO format ...)
+[11/01 18:43:39 d2.data.datasets.coco]: Converting dataset dicts into COCO format
+[11/01 18:43:39 d2.data.datasets.coco]: Conversion finished, #images: 1000, #annotations: 7204
+[11/01 18:43:39 d2.data.datasets.coco]: Caching COCO format annotations at 'output_mars_fixed_5k_50ep_gem_without_mars_backprop/coco_2017_val_subset_coco_format.json' ...
+[11/01 18:43:40 d2.evaluation.evaluator]: Start inference on 1000 batches
+[11/01 18:43:41 d2.evaluation.evaluator]: Inference done 11/1000. Dataloading: 0.0007 s/iter. Inference: 0.0401 s/iter. Eval: 0.0624 s/iter. Total: 0.1031 s/iter. ETA=0:01:41
+[11/01 18:43:46 d2.evaluation.evaluator]: Inference done 64/1000. Dataloading: 0.0008 s/iter. Inference: 0.0414 s/iter. Eval: 0.0538 s/iter. Total: 0.0961 s/iter. ETA=0:01:29
+[11/01 18:43:51 d2.evaluation.evaluator]: Inference done 114/1000. Dataloading: 0.0008 s/iter. Inference: 0.0403 s/iter. Eval: 0.0576 s/iter. Total: 0.0988 s/iter. ETA=0:01:27
+[11/01 18:43:56 d2.evaluation.evaluator]: Inference done 166/1000. Dataloading: 0.0008 s/iter. Inference: 0.0395 s/iter. Eval: 0.0580 s/iter. Total: 0.0984 s/iter. ETA=0:01:22
+[11/01 18:44:01 d2.evaluation.evaluator]: Inference done 218/1000. Dataloading: 0.0009 s/iter. Inference: 0.0392 s/iter. Eval: 0.0579 s/iter. Total: 0.0981 s/iter. ETA=0:01:16
+[11/01 18:44:07 d2.evaluation.evaluator]: Inference done 271/1000. Dataloading: 0.0009 s/iter. Inference: 0.0391 s/iter. Eval: 0.0574 s/iter. Total: 0.0975 s/iter. ETA=0:01:11
+[11/01 18:44:12 d2.evaluation.evaluator]: Inference done 317/1000. Dataloading: 0.0009 s/iter. Inference: 0.0392 s/iter. Eval: 0.0593 s/iter. Total: 0.0994 s/iter. ETA=0:01:07
+[11/01 18:44:17 d2.evaluation.evaluator]: Inference done 369/1000. Dataloading: 0.0009 s/iter. Inference: 0.0391 s/iter. Eval: 0.0590 s/iter. Total: 0.0990 s/iter. ETA=0:01:02
+[11/01 18:44:22 d2.evaluation.evaluator]: Inference done 420/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0590 s/iter. Total: 0.0990 s/iter. ETA=0:00:57
+[11/01 18:44:27 d2.evaluation.evaluator]: Inference done 472/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0588 s/iter. Total: 0.0988 s/iter. ETA=0:00:52
+[11/01 18:44:32 d2.evaluation.evaluator]: Inference done 523/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0589 s/iter. Total: 0.0989 s/iter. ETA=0:00:47
+[11/01 18:44:37 d2.evaluation.evaluator]: Inference done 575/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0588 s/iter. Total: 0.0987 s/iter. ETA=0:00:41
+[11/01 18:44:42 d2.evaluation.evaluator]: Inference done 621/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0596 s/iter. Total: 0.0995 s/iter. ETA=0:00:37
+[11/01 18:44:47 d2.evaluation.evaluator]: Inference done 670/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0598 s/iter. Total: 0.0997 s/iter. ETA=0:00:32
+[11/01 18:44:52 d2.evaluation.evaluator]: Inference done 718/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0601 s/iter. Total: 0.1001 s/iter. ETA=0:00:28
+[11/01 18:44:57 d2.evaluation.evaluator]: Inference done 769/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0601 s/iter. Total: 0.0999 s/iter. ETA=0:00:23
+[11/01 18:45:02 d2.evaluation.evaluator]: Inference done 820/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0600 s/iter. Total: 0.0998 s/iter. ETA=0:00:17
+[11/01 18:45:07 d2.evaluation.evaluator]: Inference done 871/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0599 s/iter. Total: 0.0998 s/iter. ETA=0:00:12
+[11/01 18:45:12 d2.evaluation.evaluator]: Inference done 922/1000. Dataloading: 0.0009 s/iter. Inference: 0.0390 s/iter. Eval: 0.0599 s/iter. Total: 0.0998 s/iter. ETA=0:00:07
+[11/01 18:45:17 d2.evaluation.evaluator]: Inference done 973/1000. Dataloading: 0.0009 s/iter. Inference: 0.0389 s/iter. Eval: 0.0599 s/iter. Total: 0.0997 s/iter. ETA=0:00:02
+[11/01 18:45:20 d2.evaluation.evaluator]: Total inference time: 0:01:39.730709 (0.100232 s / iter per device, on 1 devices)
+[11/01 18:45:20 d2.evaluation.evaluator]: Total inference pure compute time: 0:00:38 (0.038919 s / iter per device, on 1 devices)
+[11/01 18:45:21 d2.evaluation.coco_evaluation]: Preparing results for COCO format ...
+[11/01 18:45:21 d2.evaluation.coco_evaluation]: Saving results to output_mars_fixed_5k_50ep_gem_without_mars_backprop/coco_instances_results.json
+[11/01 18:45:21 d2.evaluation.coco_evaluation]: Evaluating predictions with unofficial COCO API...
+Loading and preparing results...
+DONE (t=1.18s)
+creating index...
+index created!
+[11/01 18:45:25 d2.evaluation.fast_eval_api]: Evaluate annotation type *segm*
+[11/01 18:45:27 d2.evaluation.fast_eval_api]: COCOeval_opt.evaluate() finished in 2.46 seconds.
+[11/01 18:45:27 d2.evaluation.fast_eval_api]: Accumulating evaluation results...
+[11/01 18:45:27 d2.evaluation.fast_eval_api]: COCOeval_opt.accumulate() finished in 0.33 seconds.
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.014
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.028
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.012
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.003
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.012
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.025
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.037
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.062
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.064
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.011
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.044
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.112
+[11/01 18:45:27 d2.evaluation.coco_evaluation]: Evaluation results for segm: 
+|  AP   |  AP50  |  AP75  |  APs  |  APm  |  APl  |
+|:-----:|:------:|:------:|:-----:|:-----:|:-----:|
+| 1.422 | 2.818  | 1.212  | 0.332 | 1.246 | 2.468 |
+[11/01 18:45:27 d2.evaluation.coco_evaluation]: Per-category segm AP: 
+| category      | AP    | category     | AP    | category       | AP     |
+|:--------------|:------|:-------------|:------|:---------------|:-------|
+| person        | 0.942 | bicycle      | 0.043 | car            | 0.235  |
+| motorcycle    | 0.203 | airplane     | 7.744 | bus            | 4.487  |
+| train         | 6.417 | truck        | 0.144 | boat           | 0.003  |
+| traffic light | 0.199 | fire hydrant | 8.476 | stop sign      | 19.810 |
+| parking meter | 0.000 | bench        | 0.008 | bird           | 0.024  |
+| cat           | 4.427 | dog          | 1.593 | horse          | 0.392  |
+| sheep         | 0.045 | cow          | 0.135 | elephant       | 1.305  |
+| bear          | 3.172 | zebra        | 0.631 | giraffe        | 0.335  |
+| backpack      | 0.000 | umbrella     | 0.165 | handbag        | 0.012  |
+| tie           | 0.163 | suitcase     | 0.000 | frisbee        | 0.816  |
+| skis          | 0.017 | snowboard    | 0.021 | sports ball    | 11.769 |
+| kite          | 0.190 | baseball bat | 0.122 | baseball glove | 3.006  |
+| skateboard    | 0.000 | surfboard    | 0.718 | tennis racket  | 2.268  |
+| bottle        | 0.235 | wine glass   | 0.000 | cup            | 0.002  |
+| fork          | 0.119 | knife        | 0.000 | spoon          | 0.010  |
+| bowl          | 0.099 | banana       | 0.318 | apple          | 0.036  |
+| sandwich      | 2.288 | orange       | 0.604 | broccoli       | 0.646  |
+| carrot        | 2.111 | hot dog      | 0.000 | pizza          | 8.592  |
+| donut         | 0.598 | cake         | 0.304 | chair          | 0.003  |
+| couch         | 1.902 | potted plant | 0.206 | bed            | 2.090  |
+| dining table  | 3.483 | toilet       | 1.673 | tv             | 1.919  |
+| laptop        | 0.509 | mouse        | 0.000 | remote         | 0.000  |
+| keyboard      | 0.555 | cell phone   | 0.007 | microwave      | 0.000  |
+| oven          | 0.000 | toaster      | 0.000 | sink           | 0.237  |
+| refrigerator  | 0.433 | book         | 0.006 | clock          | 3.072  |
+| vase          | 0.010 | scissors     | 0.000 | teddy bear     | 0.235  |
+| hair drier    | nan   | toothbrush   | 0.000 |                |        |
+[11/01 18:45:28 d2.engine.defaults]: Evaluation results for coco_2017_val_subset in csv format:
+[11/01 18:45:28 d2.evaluation.testing]: copypaste: Task: segm
+[11/01 18:45:28 d2.evaluation.testing]: copypaste: AP,AP50,AP75,APs,APm,APl
+[11/01 18:45:28 d2.evaluation.testing]: copypaste: 1.4220,2.8178,1.2117,0.3317,1.2457,2.4681
+wandb: 🚀 View run output_mars_fixed_5k_50ep_gem_without_mars_backprop at: https://wandb.ai/vaishali-maheshkar01-ub/mars_mask2former/runs/h926k0tx
+wandb: ⭐️ View project at: https://wandb.ai/vaishali-maheshkar01-ub/mars_mask2former
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20251030_212904-h926k0tx/logs

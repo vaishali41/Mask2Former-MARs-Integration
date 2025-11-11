@@ -1,0 +1,10 @@
+COMPLETE METRICS WITH ALL LOSSES
+
+Metric                         Non-Rotated          Rotated              Change         
+-------------------------------------------------------------------------------------
+Dice Score                     44.01%                   43.76%                   -0.57%
+Total Loss                     30.1390                88.5926                +193.95%
+Mask Loss                      0.3450                1.8403                +433.43%
+Dice Loss                      0.0000                0.0000                N/A
+Avg Confidence                 9.44%                   5.68%                   -39.80%
+Max Confidence                 98.83%                   98.47%                   -0.36%

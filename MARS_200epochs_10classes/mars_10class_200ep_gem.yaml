@@ -1,0 +1,124 @@
+# Mask2Former + MARs + GeM - 10 Class Subset (200 Epochs)
+# Dataset: 10 classes, 100 samples per class = 1,000 total samples
+# Training: 200 epochs = 50,000 iterations (batch_size=4)
+
+OUTPUT_DIR: "output_mars_10class_200ep_gem_detach"
+
+MODEL:
+  META_ARCHITECTURE: "MaskFormerWithMARS"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  DEVICE: "cuda"
+
+  BACKBONE:
+    NAME: "build_resnet_backbone"
+  
+  RESNETS:
+    DEPTH: 50
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+
+  # Primary semantic segmentation head config
+  SEM_SEG_HEAD:
+    NAME: "MaskFormerHead"
+    PIXEL_DECODER_NAME: "MSDeformAttnPixelDecoder"
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+    DEFORMABLE_TRANSFORMER_ENCODER_IN_FEATURES: ["res3", "res4", "res5"]
+    MASK_DIM: 256
+    NUM_CLASSES: 10  # 10 selected classes from COCO
+    
+  # Mask2Former specific configs
+  MASK_FORMER:
+    TRANSFORMER_DECODER_NAME: "MultiScaleMaskedTransformerDecoder"
+    TRANSFORMER_IN_FEATURE: "multi_scale_pixel_decoder"
+    NUM_OBJECT_QUERIES: 100
+    DEEP_SUPERVISION: True
+    NO_OBJECT_WEIGHT: 0.1
+    CLASS_WEIGHT: 2.0
+    MASK_WEIGHT: 5.0
+    DICE_WEIGHT: 5.0
+    HIDDEN_DIM: 256
+    NUM_HEADS: 8
+    DROPOUT: 0.0
+    DIM_FEEDFORWARD: 2048
+    ENC_LAYERS: 0
+    PRE_NORM: False
+    ENFORCE_INPUT_PROJ: False
+    SIZE_DIVISIBILITY: 32
+    DEC_LAYERS: 9
+    TRAIN_NUM_POINTS: 12544
+    OVERSAMPLE_RATIO: 3.0
+    IMPORTANCE_SAMPLE_RATIO: 0.75
+    TEST:
+      SEMANTIC_ON: True
+      INSTANCE_ON: True
+      PANOPTIC_ON: False
+      OVERLAP_THRESHOLD: 0.8
+      OBJECT_MASK_THRESHOLD: 0.8
+
+  # MARs configuration with GeM pooling
+  MARS:
+    ENABLED: True
+    WEIGHT: 0.5
+    LOSS_TYPE: "cosine"
+    USE_GEM: True
+    GEM_INIT_P: 3.0
+    GEM_MIN_P: 1.0
+    GEM_MAX_P: 6.0
+    WARMUP_ITERS: 1000
+
+DATASETS:
+  TRAIN: ("coco_10class_train",)
+  TEST: ("coco_10class_val",)
+
+DATALOADER:
+  NUM_WORKERS: 4
+  FILTER_EMPTY_ANNOTATIONS: True
+
+SOLVER:
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.0001
+  OPTIMIZER: "ADAMW"
+  WEIGHT_DECAY: 0.05
+  BACKBONE_MULTIPLIER: 0.1
+  
+  # 200 epochs calculation:
+  # Samples: 1000, Batch: 4 → 250 iters/epoch
+  # 200 epochs × 250 iters = 50,000 iterations
+  MAX_ITER: 50000
+  
+  # Learning rate schedule (cosine decay)
+  # Milestones at 60% and 90% of training
+  STEPS: (30000, 45000)
+  GAMMA: 0.1
+
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 500
+  WARMUP_METHOD: linear
+
+  CHECKPOINT_PERIOD: 2500  # Save every 10 epochs
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "value"
+    CLIP_VALUE: 1.0
+    NORM_TYPE: 2.0
+
+# Disable automatic evaluation to avoid OOM during/after training
+# Use manual evaluation after training with smaller batch sizes
+# TEST:
+#   EVAL_PERIOD: 0
+
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640)
+  MIN_SIZE_TRAIN_SAMPLING: "choice"
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 640
+  MAX_SIZE_TEST: 1333
+  FORMAT: "RGB"
+  
+  # Data augmentation for small dataset
+  RANDOM_FLIP: "horizontal"
+
+# Training notes:
+# - Small dataset (1K samples) → reduced image sizes for faster training
+# - Checkpoint every 10 epochs for analysis
+# - Cosine LR schedule with warmup
+# - Classes: person, car, cat, dog, horse, cow, bottle, chair, couch, dining table

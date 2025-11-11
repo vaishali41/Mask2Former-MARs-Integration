@@ -1,0 +1,10 @@
+_BASE_: "mars_5k_50ep_corrected.yaml"
+
+MODEL:
+  MARS:
+    ENABLED: False  # ✅ Disable MARS temporarily
+
+OUTPUT_DIR: "./output_test_no_mars"
+
+SOLVER:
+  MAX_ITER: 100  # Just 100 iterations for testing

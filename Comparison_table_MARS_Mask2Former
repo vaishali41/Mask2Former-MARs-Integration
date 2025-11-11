@@ -1,0 +1,24 @@
+Mask2Former with rotated and Non rotated
+
+Metric                         Non-Rotated          Rotated              Change         
+-------------------------------------------------------------------------------------
+Dice Score                     44.01%                   43.76%                   -0.57%
+Total Loss                     30.1390                88.5926                +193.95%
+Mask Loss                      0.3450                1.8403                +433.43%
+Dice Loss                      0.0000                0.0000                N/A
+Avg Confidence                 9.44%                   5.68%                   -39.80%
+Max Confidence                 98.83%                   98.47%                   -0.36%
+
+
+
+
+
+MARS + Mask2Former with rotated and non rotated
+
+Metric                  Non-Rotated          Rotated                        Change
+Dice Score              15.2%                14.6%                           -3.93%
+Total Loss              6,678                6,787                          -1.64%
+Mask Loss               1,334                1,355                          -1.64%
+Max Confidence          4.73%                4.73%                          -0.02%
+MARS Reg Loss           4.49e-08             4.91e-08                         -9.25%
+

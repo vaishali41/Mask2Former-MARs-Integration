@@ -1,0 +1,99 @@
+# MARS + Mask2Former Training Configuration
+# Dataset: 5000 training images, 1000 validation images
+# Training: 50 epochs
+
+_BASE_: "instance-segmentation/maskformer2_R50_bs16_50ep.yaml"
+
+# ==================== DATASETS ====================
+DATASETS:
+  TRAIN: ("coco_2017_train_subset",)
+  TEST: ("coco_2017_val_subset",)
+
+# ==================== MODEL ====================
+MODEL:
+  META_ARCHITECTURE: "MaskFormerWithMARS"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  
+  # MARS Configuration
+  MARS:
+    ENABLED: True                    # Enable MARS training
+    WEIGHT: 0.15                      # MARS loss weight (λ)
+    LOSS_TYPE: "cosine"                  # Loss type: "kl", "l2", or "cosine"
+    # Adaptation: Uses transformer attention instead of SE/CA
+  
+  # Backbone
+  BACKBONE:
+    FREEZE_AT: 0  # Don't freeze backbone layers
+
+# ==================== SOLVER ====================
+SOLVER:
+  # Batch size and iterations
+  IMS_PER_BATCH: 1              # Physical batch size (adjust for GPU memory)
+  GRADIENT_ACCUMULATION_STEPS: 16  # Effective batch = 2 * 8 = 16
+  
+  # Learning rate
+  BASE_LR: 0.0001
+  WEIGHT_DECAY: 0.05
+  WEIGHT_DECAY_NORM: 0.0
+  
+  # Schedule
+  # 50 epochs: 5000 images / 16 batch = 312.5 iters/epoch → 15625 total iters
+  MAX_ITER: 15625                 # 50 epochs
+  STEPS: (12500, 14500)           # Decay at epoch 40 and 46
+  GAMMA: 0.1
+  WARMUP_ITERS: 250               # Warmup for ~0.8 epoch
+  WARMUP_FACTOR: 0.001
+  
+  # Optimization
+  OPTIMIZER: "ADAMW"
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "value"
+    CLIP_VALUE: 1.0
+    NORM_TYPE: 2.0
+  
+  # Mixed precision
+  AMP:
+    ENABLED: True  # Use automatic mixed precision
+  
+  # Checkpointing
+  CHECKPOINT_PERIOD: 1563  # Save every 5 epochs
+
+# ==================== DATALOADER ====================
+DATALOADER:
+  NUM_WORKERS: 4
+  FILTER_EMPTY_ANNOTATIONS: True
+
+# ==================== INPUT ====================
+INPUT:
+  # Image size
+  #MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608)
+  MIN_SIZE_TEST: 640  # Reduce from 800
+  MAX_SIZE_TRAIN: 1000  # Reduce from 1333
+  MAX_SIZE_TEST: 1000   # Reduce from 1333
+  #MIN_SIZE_TEST: 800
+  #MAX_SIZE_TRAIN: 1333
+  #MAX_SIZE_TEST: 1333
+  
+  # Augmentations (standard Mask2Former)
+  RANDOM_FLIP: "horizontal"
+  
+  # Format
+  FORMAT: "RGB"
+
+# ==================== TEST ====================
+TEST:
+  EVAL_PERIOD: 1563  # Evaluate every 5 epochs
+  AUG:
+    ENABLED: False
+
+# ==================== OUTPUT ====================
+OUTPUT_DIR: "./output_mars_5k_50ep"
+
+# ==================== MISC ====================
+SEED: 42
+CUDNN_BENCHMARK: True
+
+# ==================== Mask2Former Specific ====================
+# (Keep default settings from base config)

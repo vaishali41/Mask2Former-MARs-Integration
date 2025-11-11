@@ -1,0 +1,31 @@
+_BASE_: "coco/instance-segmentation/maskformer2_R50_bs16_50ep.yaml"
+
+# Use subset datasets
+DATASETS:
+  TRAIN: ("coco_2017_train_subset",)
+  TEST: ("coco_2017_val_subset",)
+
+# Training settings (same as baseline for fair comparison)
+SOLVER:
+  IMS_PER_BATCH: 1
+  GRADIENT_ACCUMULATION_STEPS: 16
+  MAX_ITER: 62500  # ~50 epochs for 5000 images
+  STEPS: (25000,)
+  CHECKPOINT_PERIOD: 5000
+  BASE_LR: 0.0001
+
+TEST:
+  EVAL_PERIOD: 5000
+
+# MARS-specific settings
+MODEL:
+  MARS:
+    ENABLED: True
+    WEIGHT: 0.1  # Weight for MARS regularization loss
+    NUM_VIEWS: 2  # Original + 1 augmented view
+  
+  # Use MARS-enhanced architecture
+  META_ARCHITECTURE: "MaskFormerWithMARS"
+
+# Output directory
+OUTPUT_DIR: "./output_mars"

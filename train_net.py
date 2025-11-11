@@ -19,7 +19,8 @@ import os
 
 from collections import OrderedDict
 from typing import Any, Dict, List, Set
-
+from detectron2.data.datasets import register_coco_instances
+import random
 import torch
 
 import detectron2.utils.comm as comm
@@ -57,6 +58,43 @@ from mask2former import (
     SemanticSegmentorWithTTA,
     add_maskformer2_config,
 )
+
+# Sample 5000 training images
+def register_coco_subset(name, json_file, image_root, subset_size):
+    from pycocotools.coco import COCO
+    coco = COCO(json_file)
+    img_ids = list(coco.imgs.keys())
+    random.seed(42)
+    subset_ids = random.sample(img_ids, min(subset_size, len(img_ids)))
+    
+    # Filter annotations
+    anns = []
+    for img_id in subset_ids:
+        ann_ids = coco.getAnnIds(imgIds=img_id)
+        anns.extend(coco.loadAnns(ann_ids))
+    
+    # Create subset annotations
+    subset_data = {
+        'images': [coco.imgs[i] for i in subset_ids],
+        'annotations': anns,
+        'categories': coco.dataset['categories']
+    }
+    
+    import json
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        json.dump(subset_data, f)
+        temp_file = f.name
+    
+    register_coco_instances(name, {}, temp_file, image_root)
+
+# Register subsets
+register_coco_subset("coco_2017_train_subset", 
+                     "datasets/coco/annotations/instances_train2017.json",
+                     "datasets/coco/train2017", 5000)
+register_coco_subset("coco_2017_val_subset",
+                     "datasets/coco/annotations/instances_val2017.json", 
+                     "datasets/coco/val2017", 1000)
 
 
 class Trainer(DefaultTrainer):

@@ -1,0 +1,55 @@
+ROTATION ROBUSTNESS EVALUATION RESULTS
+================================================================================
+
+Rotation 0°:
+  rotation: 0
+  num_images: 100
+  total_detections: 10000
+  avg_detections_per_image: 100.0
+  avg_confidence: 0.0943892837723135
+  std_confidence: 0.20722599718924667
+  max_confidence: 0.9883053302764893
+  min_confidence: 0.0
+  high_conf_detections: 489
+  medium_conf_detections: 169
+  low_conf_detections: 9342
+
+Rotation 90°:
+  rotation: 90
+  num_images: 100
+  total_detections: 10000
+  avg_detections_per_image: 100.0
+  avg_confidence: 0.055893681601196295
+  std_confidence: 0.1433926752257718
+  max_confidence: 0.9820860624313354
+  min_confidence: 0.0
+  high_conf_detections: 191
+  medium_conf_detections: 115
+  low_conf_detections: 9694
+
+Rotation 180°:
+  rotation: 180
+  num_images: 100
+  total_detections: 10000
+  avg_detections_per_image: 100.0
+  avg_confidence: 0.060114298618302565
+  std_confidence: 0.15460734788425518
+  max_confidence: 0.9875654578208923
+  min_confidence: 0.0
+  high_conf_detections: 241
+  medium_conf_detections: 106
+  low_conf_detections: 9653
+
+Rotation 270°:
+  rotation: 270
+  num_images: 100
+  total_detections: 10000
+  avg_detections_per_image: 100.0
+  avg_confidence: 0.054471575963447684
+  std_confidence: 0.14395723069107427
+  max_confidence: 0.9845225214958191
+  min_confidence: 0.0
+  high_conf_detections: 204
+  medium_conf_detections: 100
+  low_conf_detections: 9696
+

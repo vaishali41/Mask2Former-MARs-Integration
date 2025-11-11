@@ -1,0 +1,9 @@
+ACTUAL COMPUTED METRICS - ROTATION COMPARISON
+
+Metric                         Non-Rotated          Rotated              Change         
+-------------------------------------------------------------------------------------
+Dice Score                     44.01%                   43.76%                   -0.57%
+Avg Confidence                 9.44%                   5.68%                   -39.80%
+Max Confidence                 98.83%                   98.47%                   -0.36%
+High Conf (>0.7)               489                    212                    -56.65%
+Matched Instances              6720                    7493                    +11.50%

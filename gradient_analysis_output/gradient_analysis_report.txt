@@ -1,0 +1,65 @@
+================================================================================
+GRADIENT ANALYSIS REPORT
+================================================================================
+
+SUMMARY STATISTICS
+--------------------------------------------------------------------------------
+Total parameters with gradients: 96
+Average gradient norm: 3.975824e+01
+Max gradient norm: 3.070699e+02
+Min gradient norm: 0.000000e+00
+
+MARS GRADIENT ANALYSIS
+--------------------------------------------------------------------------------
+ MARS gradients detected: 1 parameters
+
+MARS parameters with gradients:
+  • mars_loss.gem_pool.p
+    Norm: 1.679656e-10, Mean: 1.679656e-10, Std: 0.000000e+00
+
+TOP 20 PARAMETERS BY GRADIENT NORM
+--------------------------------------------------------------------------------
+ 1.    sem_seg_head.pixel_decoder.layer_1.weight
+     Norm: 3.070699e+02, Sparsity: 0.00%
+ 2.    sem_seg_head.predictor.mask_embed.layers.2.weight
+     Norm: 2.821940e+02, Sparsity: 5.08%
+ 3.    sem_seg_head.predictor.mask_embed.layers.1.weight
+     Norm: 2.077257e+02, Sparsity: 11.56%
+ 4.    sem_seg_head.pixel_decoder.input_proj.2.0.weight
+     Norm: 1.446606e+02, Sparsity: 0.98%
+ 5.    sem_seg_head.pixel_decoder.mask_features.weight
+     Norm: 1.346814e+02, Sparsity: 0.00%
+ 6.    sem_seg_head.predictor.mask_embed.layers.0.weight
+     Norm: 1.314188e+02, Sparsity: 0.00%
+ 7.    backbone.res3.3.conv2.weight
+     Norm: 1.214694e+02, Sparsity: 21.54%
+ 8.    sem_seg_head.predictor.mask_embed.layers.2.bias
+     Norm: 1.199179e+02, Sparsity: 0.00%
+ 9.    backbone.res3.2.conv2.weight
+     Norm: 1.155201e+02, Sparsity: 24.04%
+10.    sem_seg_head.pixel_decoder.adapter_1.weight
+     Norm: 1.099982e+02, Sparsity: 1.17%
+11.    backbone.res3.1.conv2.weight
+     Norm: 1.038483e+02, Sparsity: 16.28%
+12.    sem_seg_head.pixel_decoder.input_proj.0.0.weight
+     Norm: 9.366617e+01, Sparsity: 3.91%
+13.    backbone.res5.2.conv2.weight
+     Norm: 8.730504e+01, Sparsity: 36.16%
+14.    backbone.res3.2.conv3.weight
+     Norm: 8.163683e+01, Sparsity: 9.10%
+15.    sem_seg_head.predictor.transformer_cross_attention_layers.0.multihead_attn.in_proj_weight
+     Norm: 7.987072e+01, Sparsity: 0.00%
+16.    backbone.res3.1.conv3.weight
+     Norm: 7.882195e+01, Sparsity: 8.37%
+17.    backbone.res3.3.conv3.weight
+     Norm: 7.639672e+01, Sparsity: 7.97%
+18.    backbone.res3.0.conv2.weight
+     Norm: 7.517500e+01, Sparsity: 11.32%
+19.    backbone.res5.1.conv2.weight
+     Norm: 6.818350e+01, Sparsity: 33.22%
+20.    backbone.res5.0.conv2.weight
+     Norm: 6.216187e+01, Sparsity: 42.43%
+
+🔴 = MARS-related parameter
+
+================================================================================

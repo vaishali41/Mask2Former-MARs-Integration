@@ -1,0 +1,87 @@
+# MARS + Mask2Former Training Configuration
+# Dataset: 5000 training images, 1000 validation images
+# Training: 50 epochs
+
+_BASE_: "instance-segmentation/maskformer2_R50_bs16_50ep.yaml"
+
+# ==================== DATASETS ====================
+DATASETS:
+  TRAIN: ("coco_2017_train_subset",)
+  TEST: ("coco_2017_val_subset",)
+
+# ==================== MODEL ====================
+MODEL:
+  META_ARCHITECTURE: "MaskFormerWithMARS"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  
+  # MARS Configuration
+  MARS:
+    ENABLED: True
+    WEIGHT: 1.0                       # Increased from 0.15
+    LOSS_TYPE: "cosine"
+  
+  # Backbone
+  BACKBONE:
+    FREEZE_AT: 0
+
+# ==================== SOLVER ====================
+SOLVER:
+  # Batch size and iterations
+  IMS_PER_BATCH: 1                  # ✅ Fixed: Was 2, now 1
+  GRADIENT_ACCUMULATION_STEPS: 4   # ✅ Fixed: Was 8, now 4
+  # Effective batch = 2 * 8 = 16
+  
+  # Learning rate
+  BASE_LR: 0.0001
+  WEIGHT_DECAY: 0.05
+  WEIGHT_DECAY_NORM: 0.0
+  
+  # Schedule
+  MAX_ITER: 15625                   # 50 epochs
+  STEPS: (12500, 14500)
+  GAMMA: 0.1
+  WARMUP_ITERS: 250
+  WARMUP_FACTOR: 0.001
+  
+  # Optimization
+  OPTIMIZER: "ADAMW"
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "value"
+    CLIP_VALUE: 1.0
+    NORM_TYPE: 2.0
+  
+  # Mixed precision
+  AMP:
+    ENABLED: True
+  
+  # Checkpointing
+  CHECKPOINT_PERIOD: 1563
+
+# ==================== DATALOADER ====================
+DATALOADER:
+  NUM_WORKERS: 4
+  FILTER_EMPTY_ANNOTATIONS: True
+
+# ==================== INPUT ====================
+INPUT:
+  # ✅ Fixed: Use DEFAULT sizes from base config (don't override!)
+  # MIN_SIZE_TRAIN and MAX_SIZE_TRAIN will use base config values
+  # This matches the working baseline exactly
+  
+  # Augmentations
+  RANDOM_FLIP: "horizontal"
+  FORMAT: "RGB"
+
+# ==================== TEST ====================
+TEST:
+  EVAL_PERIOD: 1563
+  AUG:
+    ENABLED: False
+
+# ==================== OUTPUT ====================
+OUTPUT_DIR: "./output_mars_fixed_5k_50ep"
+
+# ==================== MISC ====================
+SEED: 42
+CUDNN_BENCHMARK: True

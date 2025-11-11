@@ -1,0 +1,83 @@
+Overall Accuracy: 0.00%
+
+Per-Class Accuracy:
+  airplane            : 0.00%
+  apple               : 0.00%
+  backpack            : 0.00%
+  banana              : 0.00%
+  baseball bat        : 0.00%
+  baseball glove      : 0.00%
+  bear                : 0.00%
+  bed                 : 0.00%
+  bench               : 0.00%
+  bicycle             : 0.00%
+  bird                : 0.00%
+  boat                : 0.00%
+  book                : 0.00%
+  bottle              : 0.00%
+  bowl                : 0.00%
+  broccoli            : 0.00%
+  bus                 : 0.00%
+  cake                : 0.00%
+  car                 : 0.00%
+  carrot              : 0.00%
+  cat                 : 0.00%
+  cell phone          : 0.00%
+  chair               : 0.00%
+  clock               : 0.00%
+  couch               : 0.00%
+  cow                 : 0.00%
+  cup                 : 0.00%
+  dining table        : 0.00%
+  dog                 : 0.00%
+  donut               : 0.00%
+  elephant            : 0.00%
+  fire hydrant        : 0.00%
+  fork                : 0.00%
+  frisbee             : 0.00%
+  giraffe             : 0.00%
+  hair drier          : 0.00%
+  handbag             : 0.00%
+  horse               : 0.00%
+  hot dog             : 0.00%
+  keyboard            : 0.00%
+  kite                : 0.00%
+  knife               : 0.00%
+  laptop              : 0.00%
+  microwave           : 0.00%
+  motorcycle          : 0.00%
+  mouse               : 0.00%
+  orange              : 0.00%
+  oven                : 0.00%
+  parking meter       : 0.00%
+  person              : 0.00%
+  pizza               : 0.00%
+  potted plant        : 0.00%
+  refrigerator        : 0.00%
+  remote              : 0.00%
+  sandwich            : 0.00%
+  scissors            : 0.00%
+  sheep               : 0.00%
+  sink                : 0.00%
+  skateboard          : 0.00%
+  skis                : 0.00%
+  snowboard           : 0.00%
+  spoon               : 0.00%
+  sports ball         : 0.00%
+  stop sign           : 0.00%
+  suitcase            : 0.00%
+  surfboard           : 0.00%
+  teddy bear          : 0.00%
+  tennis racket       : 0.00%
+  tie                 : 0.00%
+  toaster             : 0.00%
+  toilet              : 0.00%
+  toothbrush          : 0.00%
+  traffic light       : 0.00%
+  train               : 0.00%
+  truck               : 0.00%
+  tv                  : 0.00%
+  umbrella            : 0.00%
+  vase                : 0.00%
+  wine glass          : 0.00%
+  zebra               : 0.00%
