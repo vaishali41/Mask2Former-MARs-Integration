@@ -51,23 +51,7 @@ class GeM(nn.Module):
             print(f"        [GeM] Output range: [{x.min().item():.6f}, {x.max().item():.6f}]")
         
         return x
-"""
-class GeM(nn.Module):
-    #Generalized Mean Pooling with learnable p (per module).
-    def __init__(self, p_init: float = 3.0, eps: float = 1e-6, p_min: float = 1.0, p_max: float = 6.0):
-        super().__init__()
-        self.p = nn.Parameter(torch.ones(1) * float(p_init))
-        self.eps = eps
-        self.p_min = float(p_min)
-        self.p_max = float(p_max)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # constrain p for stability (non-in-place)
-        p = self.p.clamp(self.p_min, self.p_max)
-        x = x.clamp(min=self.eps)
-        x = x.pow(p).mean(dim=-1, keepdim=True).pow(1.0 / p)
-        return x
-"""
 
 # ------------------ MARs Loss ------------------
 class MARsLoss(nn.Module):
@@ -107,29 +91,7 @@ class MARsLoss(nn.Module):
         x = x / max(self.tau, 1e-8)
         x = torch.softmax(x, dim=-1).clamp(min=1e-8)  # Non-in-place
         return x
-    """
-    def _reduce(self, x: torch.Tensor) -> torch.Tensor:
-        
-        #Reduce spatial dimension via GeM pooling, keep query dimension
-        #Input: [B, Q, S] where B=batch, Q=queries, S=spatial
-        #Output: [B, Q] 
-        
-        # Apply GeM pooling over spatial dimension
-        x = self.gem_pool(x)  # [B, Q, S] -> [B, Q, 1]
-        x = x.squeeze(-1)     # [B, Q, 1] -> [B, Q]
-        
-        # Keep it as [B, Q] for cosine similarity computation
-        
-        return x  # Shape: [B, Q]
-    """
-    """
-    def _reduce(self, t: torch.Tensor) -> torch.Tensor:
-        # flatten (B, *) -> (B, L); optionally GeM -> (B,)
-        t = t.flatten(start_dim=1)
-        if self.gem is not None:
-            t = self.gem(t).squeeze(-1)
-        return t
-    """
+
     
     def _reduce(self, x):
         x = self.gem_pool(x)   # [B, Q, S] -> [B, Q, 1]
@@ -197,35 +159,7 @@ class MARsLoss(nn.Module):
         print(f"    [MARsLoss] Processed {n} layers, Final loss: {final_loss.item():.6f}\n")
         
         return final_loss
-    """
-    def forward(self, a_list: List[torch.Tensor], b_list: List[torch.Tensor]) -> torch.Tensor:
-        # DEBUG
-        print(f"\n    [MARsLoss] Processing {len(attn_view1)} attention pairs")
-        if not a_list or not b_list:
-            return torch.tensor(0.0, device=a_list[0].device if a_list else "cpu")
 
-        total, n = 0.0, 0
-        for a, b in zip(a_list, b_list):
-            if a is None or b is None or a.shape != b.shape:
-                continue
-            a = self._reduce(a)
-            b = self._reduce(b)
-
-            if self.loss_type == "kl":
-                pa, pb = self._normalize(a), self._normalize(b)
-                loss = 0.5 * (F.kl_div(pa.log(), pb, reduction="batchmean") +
-                              F.kl_div(pb.log(), pa, reduction="batchmean"))
-            elif self.loss_type == "cosine":
-                loss = 1.0 - F.cosine_similarity(a, b, dim=-1).mean()
-            elif self.loss_type == "l2":
-                loss = F.mse_loss(a, b)
-            else:
-                loss = F.mse_loss(a, b)
-
-            total += loss
-            n += 1
-        return total / max(n, 1)
-    """
 
 # ------------------ Model Wrapper ------------------
 class MaskFormerWithMARS(BaseMaskFormer):
@@ -629,28 +563,6 @@ class MaskFormerWithMARS(BaseMaskFormer):
 
         # ----- MARs loss (only if both buffers captured something) -----
         # Get device from model parameters
-        """
-        device = next(self.parameters()).device
-        mars_val = torch.tensor(0.0, device=device)
-        #mars_val = torch.tensor(0.0, device=images[0].device) if images else torch.tensor(0.0)
-        if self._attn_view1 and self._attn_view2:
-            #print(f"[DEBUG] Computing MARs loss with {len(self._attn_view1)} tensors")
-            try:
-                mars_val = self.mars_loss(self._attn_view1, self._attn_view2)
-                #print(f"[DEBUG] MARs loss value: {mars_val.item()}")
-            except Exception as e:
-                print(f"[WARN] MARs loss failed: {e}")
-                import traceback
-                traceback.print_exc()
-                mars_val = torch.tensor(0.0, device=images[0].device)
-        #else:
-            #print(f"[DEBUG] Skipping MARs loss - view1: {len(self._attn_view1)}, view2: {len(self._attn_view2)}")
-        losses["loss_mars"] = self._effective_lambda() * mars_val
-        # (Optional) expose instrumentation
-        from detectron2.utils.events import get_event_storage
-        get_event_storage().put_scalar("mars_raw", float(mars_val.detach()))
-        return losses
-        """
 
         device = next(iter(losses.values())).device
         mars_val = torch.tensor(0.0, device=device)
