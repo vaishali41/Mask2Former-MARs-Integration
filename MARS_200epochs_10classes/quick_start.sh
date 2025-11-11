@@ -1,4 +1,3 @@
-#!/bin/bash
 # Quick start script for Mask2Former + MARs 10-class training
 # Usage: ./quick_start.sh [train|resume|eval|eigencam]
 
@@ -53,7 +52,7 @@ check_dataset() {
         exit 1
     fi
     
-    print_info "✓ Dataset check passed"
+    print_info "Dataset check passed"
 }
 
 # Function to check dependencies
@@ -100,7 +99,7 @@ train_model() {
         --num-gpus 1 \
         $WANDB_FLAG
     
-    print_info "✓ Training complete!"
+    print_info " Training complete!"
 }
 
 # Function to resume training
@@ -119,7 +118,7 @@ resume_training() {
         --num-gpus 1 \
         --resume
     
-    print_info "✓ Training resumed and complete!"
+    print_info "Training resumed and complete!"
 }
 
 # Function to evaluate model
@@ -136,7 +135,7 @@ evaluate_model() {
         --eval-only \
         MODEL.WEIGHTS $OUTPUT_DIR/model_final.pth
     
-    print_info "✓ Evaluation complete!"
+    print_info " Evaluation complete!"
 }
 
 # Function to generate EigenCAM visualizations

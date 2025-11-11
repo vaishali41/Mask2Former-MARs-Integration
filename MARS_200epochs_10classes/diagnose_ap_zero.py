@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Quick Diagnostic Script - Run this to identify why AP=0
 
@@ -121,9 +120,6 @@ def diagnose(args):
     print("DIAGNOSTIC SCRIPT FOR AP=0 ISSUE")
     print("="*80)
     
-    # ============================================================================
-    # TEST 1: Check Config Loading
-    # ============================================================================
     print("\n[TEST 1] Checking configuration...")
     try:
         cfg = get_cfg()
@@ -231,23 +227,20 @@ def diagnose(args):
             threshold = cfg.MODEL.MASK_FORMER.TEST.OBJECT_MASK_THRESHOLD
             print(f"  - Object threshold: {threshold}")
             if threshold > 0.5:
-                print(f"    ⚠️  WARNING: Threshold {threshold} is very high!")
-                print(f"    ⚠️  This may filter out most predictions.")
+                print(f"    WARNING: Threshold {threshold} is very high!")
+                print(f"    This may filter out most predictions.")
         
     except Exception as e:
-        print(f"✗ Config loading failed: {e}")
+        print(f" Config loading failed: {e}")
         return
-    
-    # ============================================================================
-    # TEST 2: Check Dataset Registration
-    # ============================================================================
+
     print("\n[TEST 2] Checking dataset...")
     try:
         dataset_name = cfg.DATASETS.TEST[0]
         dataset_dicts = DatasetCatalog.get(dataset_name)
         metadata = MetadataCatalog.get(dataset_name)
         
-        print(f"✓ Dataset '{dataset_name}' found")
+        print(f"Dataset '{dataset_name}' found")
         print(f"  - Images: {len(dataset_dicts)}")
         print(f"  - Classes: {metadata.thing_classes}")
         
@@ -257,26 +250,24 @@ def diagnose(args):
         
         # Count ground truth boxes
         total_gt = sum(len(d.get('annotations', [])) for d in dataset_dicts)
-        print(f"  - Total GT boxes: {total_gt}")
+        print(f"  Total GT boxes: {total_gt}")
         
         if total_gt == 0:
-            print("  ✗ ERROR: No ground truth boxes in dataset!")
+            print("  ERROR: No ground truth boxes in dataset!")
             return
             
     except Exception as e:
-        print(f"✗ Dataset check failed: {e}")
+        print(f"Dataset check failed: {e}")
         print(f"  Make sure to register the dataset before running this script!")
         return
     
-    # ============================================================================
-    # TEST 3: Check Model and Weights
-    # ============================================================================
+
     print("\n[TEST 3] Checking model and weights...")
     try:
         from mask2former_mars.modeling.meta_arch.mars_mask_former_head_gem import MaskFormerWithMARS
         
         model = MaskFormerWithMARS(cfg)
-        print("✓ Model created")
+        print(" Model created")
         
         # Load weights
         checkpoint = torch.load(args.weights, map_location='cpu')
@@ -299,7 +290,7 @@ def diagnose(args):
         
         if len(missing) > 0:
             print(f"    First few missing: {list(missing)[:3]}")
-            print("    ⚠️  WARNING: Missing keys may indicate wrong checkpoint!")
+            print("    WARNING: Missing keys may indicate wrong checkpoint!")
         
         if len(unexpected) > 0:
             print(f"    First few unexpected: {list(unexpected)[:3]}")
@@ -309,17 +300,15 @@ def diagnose(args):
         print(f"  - Total parameters: {total_params:,}")
         
         model.eval()
-        print("✓ Weights loaded and model set to eval mode")
+        print(" Weights loaded and model set to eval mode")
         
     except Exception as e:
-        print(f"✗ Model/weights check failed: {e}")
+        print(f" Model/weights check failed: {e}")
         import traceback
         traceback.print_exc()
         return
     
-    # ============================================================================
-    # TEST 4: Run Inference on One Image
-    # ============================================================================
+
     print("\n[TEST 4] Running inference on test image...")
     try:
         # Get first image
@@ -353,15 +342,15 @@ def diagnose(args):
             
             outputs = model(inputs)
         
-        print("✓ Inference completed")
+        print(" Inference completed")
         
         # Check outputs
         if not outputs:
-            print("  ✗ ERROR: Model returned empty output!")
+            print("   ERROR: Model returned empty output!")
             return
         
         if "instances" not in outputs[0]:
-            print("  ✗ ERROR: No 'instances' key in output!")
+            print("   ERROR: No 'instances' key in output!")
             print(f"  Output keys: {outputs[0].keys()}")
             return
         
@@ -369,7 +358,7 @@ def diagnose(args):
         print(f"  - Raw predictions: {len(instances)}")
         
         if len(instances) == 0:
-            print("  ✗ ERROR: Model produced 0 predictions!")
+            print("   ERROR: Model produced 0 predictions!")
             print("\n  Possible causes:")
             print("    1. Confidence threshold too high")
             print("    2. Model not trained properly")
@@ -392,8 +381,8 @@ def diagnose(args):
         print(f"  - Kept predictions: {keep.sum()}")
         
         if keep.sum() == 0:
-            print("  ✗ ERROR: All predictions filtered by threshold!")
-            print(f"  ✗ All {len(scores)} predictions have score < {threshold}")
+            print("   ERROR: All predictions filtered by threshold!")
+            print(f"   All {len(scores)} predictions have score < {threshold}")
             print("\n  FIX: Lower the threshold in your config:")
             print("       cfg.MODEL.MASK_FORMER.TEST.OBJECT_MASK_THRESHOLD = 0.05")
             return
@@ -410,38 +399,36 @@ def diagnose(args):
         
         overlap = gt_classes.intersection(pred_classes)
         if not overlap:
-            print("  ✗ ERROR: No overlap between GT and predicted classes!")
+            print("   ERROR: No overlap between GT and predicted classes!")
             print("\n  This means class IDs don't match.")
             print("  Possible causes:")
             print("    1. Model trained on different class set")
             print("    2. Class ID mapping issue")
             print("    3. Wrong dataset used for evaluation")
         else:
-            print(f"  ✓ Class overlap found: {sorted(overlap)}")
+            print(f"   Class overlap found: {sorted(overlap)}")
         
-        print("\n✓ All basic checks passed!")
+        print("\n All basic checks passed!")
         
     except Exception as e:
-        print(f"✗ Inference test failed: {e}")
+        print(f" Inference test failed: {e}")
         import traceback
         traceback.print_exc()
         return
     
-    # ============================================================================
-    # Summary
-    # ============================================================================
+
     print("\n" + "="*80)
     print("DIAGNOSIS SUMMARY")
     print("="*80)
     
     if keep.sum() > 0 and overlap:
-        print("\n✓ Model seems to be working correctly!")
+        print("\n Model seems to be working correctly!")
         print("\nIf you're still getting AP=0, check:")
         print("  1. Are you evaluating on the correct dataset?")
         print("  2. Is the evaluation script using the same class mapping?")
         print("  3. Try running evaluation on just a few images first")
     else:
-        print("\n✗ Issues found! See messages above for details.")
+        print("\n Issues found! See messages above for details.")
     
     print("\n" + "="*80)
 
